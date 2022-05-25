@@ -30,6 +30,9 @@ The head's shape can still let you sink into the ground a bit if you hit your he
 
 The head is the only means of stopping you from going up really steep slopes, including 90 degree slopes. You're free to adjust the `move_and_slide()` parameters to try and fix this, or finding a way of catching it in `physics_process()`, but so far I haven't found a way to prevent huge increases in height for any steep slope that reaches beneath the player's head radius.
 
+# Examples
+An earlier, buggier version of this controller has been used in my game [Winter Weather](https://deertears.itch.io/winter-weather), a first person poem-reader.
+
 # Contact
 
-Ember#1765 if you have questions about the controller or want to discuss options for how to improve it. I'm also here and you can just raise an issue for anything, I'm not picky with this repo.
+Ember#1765 on Discord, @goodnight_grrl on Twitter. Let me know if you have questions about the controller or want to discuss options for how to improve it. You can also just raise an issue for anything, I'm not picky with this repo.
