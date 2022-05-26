@@ -13,4 +13,13 @@ sun_angle_max = 30.0
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
+ambient_light_color = Color( 0.156863, 0.156863, 0.156863, 1 )
 ambient_light_sky_contribution = 0.0
+dof_blur_far_distance = 62.02
+dof_blur_far_transition = 0.01
+dof_blur_far_amount = 0.0
+glow_levels/2 = true
+glow_levels/4 = true
+glow_intensity = 0.17
+glow_strength = 1.46
+glow_bloom = 0.03
