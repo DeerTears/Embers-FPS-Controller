@@ -85,15 +85,14 @@ func _physics_process(_delta: float) -> void:
 	# Update Camera position, with lerped Y.
 	head_camera.global_transform.origin = Vector3(
 		camera_target_position.global_transform.origin.x,
-		camera_target_position.global_transform.origin.y,
-#		lerp(
-#			head_camera.global_transform.origin.y,
-#			camera_target_position.global_transform.origin.y,
-#			get_smooth_factor(
-#				head_camera.global_transform.origin.y,
-#				camera_target_position.global_transform.origin.y
-#			)
-#		),
+		lerp(
+			head_camera.global_transform.origin.y,
+			camera_target_position.global_transform.origin.y,
+			get_smooth_factor(
+				head_camera.global_transform.origin.y,
+				camera_target_position.global_transform.origin.y
+			)
+		),
 		camera_target_position.global_transform.origin.z
 	)
 	var has_pressed_jump: bool = false
