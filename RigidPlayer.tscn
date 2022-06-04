@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://RigidPlayer.gd" type="Script" id=1]
+
+[sub_resource type="CylinderShape" id=1]
+
+[sub_resource type="SpatialMaterial" id=3]
+
+[sub_resource type="CylinderMesh" id=2]
+material = SubResource( 3 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="RigidBody" type="RigidBody" parent="."]
+collision_layer = 2
+custom_integrator = true
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="SpringArm" type="SpringArm" parent="RigidBody"]
+transform = Transform( 1, 0, 0, 0, 0.923478, 0.383651, 0, -0.383651, 0.923478, 0, 0, 0 )
+spring_length = 8.0
+
+[node name="Camera" type="Camera" parent="RigidBody/SpringArm"]
+current = true
