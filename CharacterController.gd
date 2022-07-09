@@ -2,13 +2,10 @@ class_name Player
 extends KinematicBody
 
 """
-Created by Emberlynn Bland.
+Ember's FPS Controller
 
-This controller uses RayShape to move itself up and down bumps. The camera
-lerps its Y position toward the body's Y position to create smooth stepping.
-
-The CylinderShape allows for smooth interactions against walls. It also stops
-the player from ascending up walls that are too tall.
+CylinderShape allows for smooth interactions against walls. It also stops the
+player from ascending up walls that are too tall. Keep this in mind when editing the shape.
 
 Input Map should include actions for:
 	left
@@ -27,8 +24,8 @@ Mouse movement is always read for head movement.
 Enjoy! Contact me at Ember#1765 on Discord or @goodnight_grrl on Twitter if you have questions or suggestions.
 """
 
-# Break all of these maximums and minimums to your heart's content,
-# they're just here for easy editing in the Inspector.
+# Break all of these maximums and minimums as desired, they're just here for
+# easy editing in the Inspector.
 
 export (float, 0.0, 5.0, 0.01) var mouse_look_sensitivity = 0.2
 export (float, 0.0, 5.0, 0.01) var joy_look_sensitivity = 0.5
@@ -48,7 +45,7 @@ export (float, 0.01, 1.0, 0.01) var step_speed = 0.3
 var can_handle_input: bool = true
 
 # Accessed once per frame to invert the camera rotation: Mouse X/Y, Joy X/Y.
-var camera_invert_multipliers := [1.0, 1.0, 1.0, 1.0]
+var camera_invert_multipliers := [1.0, 1.0, -1.0, -1.0]
 ## Lookup values for camera invert.
 enum {
 	MOUSE_X,
@@ -80,7 +77,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(_delta: float) -> void:
 	var direction = Vector3()
-	# Update Camera direction.
 	head_camera.global_transform.basis = camera_target_position.global_transform.basis
 	# Update Camera position, with lerped Y.
 	head_camera.global_transform.origin = Vector3(

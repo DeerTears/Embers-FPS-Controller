@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://PlayerBody.gd" type="Script" id=2]
+[ext_resource path="res://CharacterController.gd" type="Script" id=2]
 [ext_resource path="res://crosshair.png" type="Texture" id=3]
 
 [sub_resource type="RayShape" id=1]
@@ -64,7 +64,6 @@ shape = SubResource( 2 )
 
 [node name="HeadCamera" type="Camera" parent="Body"]
 current = true
-fov = 90.0
 far = 90.0
 
 [node name="RemoteTransform" type="RemoteTransform" parent="Body/HeadCamera"]
