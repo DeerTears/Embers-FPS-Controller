@@ -24,6 +24,7 @@ Mouse movement is always read for head movement.
 Enjoy! Contact me at Ember#1765 on Discord or @goodnight_grrl on Twitter if you have questions or suggestions.
 """
 
+const COYOTE_TIME := 30
 # Break all of these maximums and minimums as desired, they're just here for
 # easy editing in the Inspector.
 
@@ -56,6 +57,8 @@ enum {
 ## Persistent velocity across physics frames.
 var movement := Vector3()
 
+var airtime_counter: int
+var is_sprinting: bool
 # The target position for the Camera to reach.
 onready var camera_target_position: Position3D = $CameraTargetPosition
 # The current position for the Camera, with Y position lerped towards the target by step_speed.
@@ -74,9 +77,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			event.relative.x * mouse_look_sensitivity,
 			event.relative.y * mouse_look_sensitivity
 		)
+	if event.is_action("sprint"):
+		is_sprinting = event.is_action_pressed("sprint")
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var direction = Vector3()
+	airtime_counter = 0 if is_on_floor() else airtime_counter + 1 
 	head_camera.global_transform.basis = camera_target_position.global_transform.basis
 	# Update Camera position, with lerped Y.
 	head_camera.global_transform.origin = Vector3(
@@ -97,13 +103,16 @@ func _physics_process(_delta: float) -> void:
 		direction += transform.basis.x * (Input.get_action_strength("right") - Input.get_action_strength("left"))
 		handle_joystick_looking()
 		direction *= speed
-		direction *= sprint_multiplier if Input.is_action_pressed("sprint") else 1.0
+		direction *= sprint_multiplier if is_sprinting else 1.0
 		has_pressed_jump = Input.is_action_just_pressed("jump")
 	movement = movement.linear_interpolate(
 			Vector3(direction.x, movement.y, direction.z), acceleration
 	)
-	if has_pressed_jump and is_on_floor():
-		movement.y += jump_strength
+	if has_pressed_jump:
+		if is_on_floor() or airtime_counter < COYOTE_TIME:
+			movement.y = 0.0
+			airtime_counter = COYOTE_TIME
+			movement.y += jump_strength
 	else:
 		movement += Vector3(0, gravity, 0)
 	# Maximum angle does not apply to RayShape CollisionShapes.
