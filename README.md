@@ -2,7 +2,13 @@
 
 My KinematicBody solution to smooth stairstepping in Godot.
 
-This repo is more a proof of concept than a bonified solution, but either way, I hope it helps.
+This repo is more a proof of concept than a bonified solution.
+
+# Goals
+
+1. Use a native Godot solution for stair-stepping.
+2. Do not separate contact reporting across multiple nodes.
+3. Keep the code clear enough for other users to study.
 
 # What does this character controller do?
 
@@ -14,9 +20,7 @@ As of recently, this controller can jump and sprint. I also recently improved th
 
 # Is there anything I should know before I use it?
 
-Yes. Right now, **really steep slopes are perfectly traversable**. This is not great for 95% games that need a stair-stepping character controller, as only their head width prevents them from climbing up 90 degree walls. Maybe this is okay for games like Proteus, or if you did a [Skyrim mountain climber](https://en.uesp.net/wiki/Skyrim:Mountain_Climbing) game.
-
-I am looking at a way to address this.
+Yes. Right now, **really steep slopes are perfectly traversable**. This is not great for 95% games that need a stair-stepping character controller, as only their head width prevents them from climbing up 90 degree walls. I have tried multiple solutions to address this, you're welcome to give it a go. No solution I found was simple and elegant enough to fit the controller's goals.
 
 # What will never be added?
 
