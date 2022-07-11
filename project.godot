@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "KinematicBody",
 "class": "Player",
 "language": "GDScript",
-"path": "res://CharacterController.gd"
+"path": "res://FPS-Controller/CharacterController.gd"
 } ]
 _global_script_class_icons={
 "Player": ""

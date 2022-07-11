@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://CharacterController.gd" type="Script" id=2]
-[ext_resource path="res://crosshair.png" type="Texture" id=3]
+[ext_resource path="res://FPS-Controller/Player.gd" type="Script" id=1]
+[ext_resource path="res://FPS-Controller/CharacterController.gd" type="Script" id=2]
+[ext_resource path="res://FPS-Controller/crosshair.png" type="Texture" id=3]
 
 [sub_resource type="RayShape" id=1]
 length = 3.0
@@ -62,23 +62,23 @@ shape = SubResource( 1 )
 [node name="CylinderHead" type="CollisionShape" parent="Body"]
 shape = SubResource( 2 )
 
-[node name="HeadCamera" type="Camera" parent="Body"]
+[node name="Camera" type="Camera" parent="Body"]
 current = true
 far = 90.0
 
-[node name="RemoteTransform" type="RemoteTransform" parent="Body/HeadCamera"]
+[node name="RemoteTransform" type="RemoteTransform" parent="Body/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0 )
 remote_path = NodePath("../../../PlayerModel")
 update_rotation = false
 update_scale = false
 
-[node name="ShootRay" type="RayCast" parent="Body/HeadCamera"]
+[node name="ShootRay" type="RayCast" parent="Body/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -20 )
 collision_mask = 13
 collide_with_areas = true
 
-[node name="CursorRay" type="RayCast" parent="Body/HeadCamera"]
+[node name="CursorRay" type="RayCast" parent="Body/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -3 )
 collision_mask = 4
@@ -88,7 +88,6 @@ collide_with_areas = true
 
 [node name="PlayerModel" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )
-visible = false
 mesh = SubResource( 3 )
 skeleton = NodePath("../Body")
 material/0 = null
@@ -108,3 +107,7 @@ margin_bottom = 396.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 stretch_mode = 3
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 14.0
