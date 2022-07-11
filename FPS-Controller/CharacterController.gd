@@ -79,7 +79,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(_delta: float) -> void:
 	var direction = Vector3()
 	var has_pressed_jump: bool = false
-	increment_airframes()
+	var is_on_floor = is_on_floor()
+	
 	camera_node.global_transform.basis = look_target.global_transform.basis
 	camera_node.global_transform.origin = Vector3(
 		look_target.global_transform.origin.x,
@@ -92,6 +93,7 @@ func _physics_process(_delta: float) -> void:
 		),
 		look_target.global_transform.origin.z
 	)
+	
 	if can_handle_input:
 		var input_vector := Input.get_vector("left", "right", "forward", "back")
 		has_pressed_jump = Input.is_action_just_pressed("jump")
@@ -103,13 +105,20 @@ func _physics_process(_delta: float) -> void:
 	velocity = velocity.linear_interpolate(
 		Vector3(direction.x, velocity.y, direction.z), acceleration
 	)
+	
+	if is_on_floor:
+		airframe_counter = 0
+	else:
+		airframe_counter += 1
+	
 	if has_pressed_jump:
-		if is_on_floor() or airframe_counter < coyote_time:
+		if is_on_floor or airframe_counter < coyote_time:
 			velocity.y = 0.0
 			airframe_counter = coyote_time
 			velocity.y += jump_strength
 	else:
 		velocity += Vector3(0, gravity, 0)
+	
 	# stop_on_slopes and max_angle args don't apply to RayShape CollisionShapes.
 	velocity = move_and_slide(velocity, Vector3.UP)
 
@@ -130,12 +139,6 @@ func handle_joystick_looking() -> void:
 	input_vector *= joy_look_sensitivity * 3.0
 	input_vector *= invert_vector
 	rotate_head(input_vector.x, input_vector.y, USE_SMOOTHING)
- 
-
-## Increases airframe counter when in the air.
-func increment_airframes() -> void:
-	airframe_counter = 0 if is_on_floor() else airframe_counter + 1 
-	airframe_counter = clamp(airframe_counter, 0, coyote_time)
 
 
 ## Rotates camera

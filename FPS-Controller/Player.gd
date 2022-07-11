@@ -7,8 +7,8 @@ This template does not include how to damage targets, just how to recognize them
 """
 
 onready var player_body: KinematicBody = $Body
-onready var cursor_ray: RayCast = $Body/HeadCamera/CursorRay
-onready var shoot_ray: RayCast = $Body/HeadCamera/ShootRay
+onready var cursor_ray: RayCast = $Body/Camera/CursorRay
+onready var shoot_ray: RayCast = $Body/Camera/ShootRay
 onready var debug_label: Label = $CanvasLayer/DebugLabel
 
 func _unhandled_input(event: InputEvent) -> void:
