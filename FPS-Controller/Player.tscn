@@ -86,6 +86,11 @@ collide_with_areas = true
 
 [node name="CameraTargetPosition" type="Position3D" parent="Body"]
 
+[node name="FloorQuery" type="RayCast" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+enabled = true
+cast_to = Vector3( 0, -10, 0 )
+
 [node name="PlayerModel" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )
 mesh = SubResource( 3 )

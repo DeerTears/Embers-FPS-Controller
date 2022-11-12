@@ -35,6 +35,8 @@ export (float, 0.01, 1.0, 0.001) var acceleration := 0.2
 export (float, 1.0, 3.0, 0.01) var sprint_multiplier = 1.8
 ## How smooth it is to go up and down stairs, with 1 being immediate.
 export (float, 0.01, 1.0, 0.01) var stair_speed = 0.3
+## How much going uphill slows you down. Gets funky above 1.0.
+export (float, 0.0, 3.0, 0.01) var slope_resistance = 1.0
 
 ## How many frames you have to make a late jump.
 export (int, 0, 60, 1) var coyote_time := 30
@@ -46,6 +48,7 @@ var can_handle_input: bool = true
 var camera_invert_multipliers := [1.0, 1.0, 1.0, 1.0]
 
 var velocity: Vector3
+var floor_steepness: float
 
 ## Counts consecutive frames in the air.
 var airframe_counter: int
@@ -56,6 +59,7 @@ var is_sprinting: bool
 ## The target position and rotation for the Camera to reach.
 onready var look_target: Position3D = $CameraTargetPosition
 onready var camera_node: Camera = $Camera
+onready var floor_query: RayCast = $FloorQuery
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -80,7 +84,7 @@ func _physics_process(_delta: float) -> void:
 	var direction = Vector3()
 	var has_pressed_jump: bool = false
 	var is_on_floor = is_on_floor()
-	
+
 	camera_node.global_transform.basis = look_target.global_transform.basis
 	camera_node.global_transform.origin = Vector3(
 		look_target.global_transform.origin.x,
@@ -99,8 +103,13 @@ func _physics_process(_delta: float) -> void:
 		has_pressed_jump = Input.is_action_just_pressed("jump")
 		direction += transform.basis.z * input_vector.y
 		direction += transform.basis.x * input_vector.x
+		if floor_query.is_colliding():
+			floor_steepness = floor_query.get_collision_normal().dot(direction.normalized().rotated(Vector3.UP, deg2rad(180)))
+			floor_steepness *= slope_resistance
 		handle_joystick_looking()
 		direction *= speed
+		# make player go slower uphill)
+		direction *= (1 - clamp(floor_steepness, 0.0, 1.0))
 		direction *= sprint_multiplier if is_sprinting else 1.0
 	velocity = velocity.linear_interpolate(
 		Vector3(direction.x, velocity.y, direction.z), acceleration

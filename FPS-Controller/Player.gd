@@ -20,7 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(_delta):
 	debug_label.text = "%s" % [Input.get_vector("left", "right", "forward", "back", -1.0)]
-
+	debug_label.text += "\n"
 
 ## Pauses the player's _unhandled_input() and input functions. Doesn't the SceneTree.
 func set_movement_input(_true: bool) -> void:
